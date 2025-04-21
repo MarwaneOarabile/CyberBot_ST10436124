@@ -1,0 +1,58 @@
+# This workflow builds a Windows Forms or WPF desktop application
+# developed in Visual Studio using .NET Core or .NET 5/6/7/8 SDKs.
+
+# It is triggered automatically whenever code is pushed to the "master" branch
+# or when a pull request is made targeting "master".
+
+# This setup ensures that your project builds successfully and that any 
+# syntax or configuration errors are caught early—without needing to open Visual Studio.
+
+
+# To configure this workflow:
+#
+# 1. Replace "YourSolutionName.sln" with your actual solution filename in the steps below.
+#
+# 2. Make sure this file is located in the ".github/workflows/" folder in your repository.
+#    The filename can be anything (e.g., "dotnet-desktop-ci.yml").
+
+# 3. If you're using NuGet packages, this workflow restores them before building.
+#    You don't need to manually install anything—GitHub Actions takes care of it.
+
+# 4. MSBuild is used for compatibility with Visual Studio-style .sln projects,
+#    making this workflow perfect for GUI apps like Windows Forms and WPF.
+
+# Note:
+# This does NOT package, sign, or test your app. It's focused purely on basic
+# CI: "Can the code build successfully?"
+
+name: .NET Desktop CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Restore NuGet packages
+      run: msbuild CyberBot_ST10436124.sln /t:Restore
+
+    - name: Build solution
+      run: msbuild CyberBot_ST10436124.sln /p:Configuration=Release
+
+      
