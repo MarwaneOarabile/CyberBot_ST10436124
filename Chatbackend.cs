@@ -64,7 +64,7 @@ namespace CyberBot_ST10436124
         // q3 Display a text-based welcome message with decorative boarderd 
 
         private string name;
-        private bool cancel = false;
+        bool cancel = false;
         //method gets name
         public void GetName()
         {
@@ -98,16 +98,22 @@ namespace CyberBot_ST10436124
             GetName();
             // Decorative border and welcome message
             Console.WriteLine( "╔═══════════════════════════════════════════════╗");
-            Console.WriteLine( "║             WELCOME " +name+ "                ");
+            Console.WriteLine( "║             WELCOME " + name + "                ");
             Console.WriteLine( "╚═══════════════════════════════════════════════╝\n");
 
 
             Console.WriteLine($"Welcome {name} to the CyberBot, the best cybersecurity chatbot");
         }
 
-        public void Start()
+
+
+        // this methods is used to display a menu
+
+        
+        public void StartMenu()
         {
-   
+            cancel = false;
+
             // this methods is used to display a menu
             Console.WriteLine("1. Start Chat");
             Console.WriteLine("2. Exit");
