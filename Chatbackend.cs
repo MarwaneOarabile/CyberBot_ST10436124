@@ -209,10 +209,10 @@ namespace CyberBot_ST10436124
                     }
 
                 }
-                catch (Exception)
+                catch (FormatException)
                 {
-
-                    throw;
+                    Console.WriteLine("I didn’t quite understand that. Could you rephrase?");
+                    continue; // Retry the input
                 }
 
 
@@ -246,8 +246,6 @@ namespace CyberBot_ST10436124
                     case 8:
                         userQuestion();
 
-
-
                         break;
                     case 9:
                         cancel = true;
@@ -260,30 +258,68 @@ namespace CyberBot_ST10436124
 
         }
 
+        //allows user to ask their own questions
         public void userQuestion()
         {
-            Console.WriteLine("Please ask your question: ");
-            string userQuestion = Console.ReadLine();
-            Console.WriteLine("You asked: " + userQuestion);
+            string userQuestion;
+            Console.WriteLine("CyberBot: You can ask me a cybersecurity question, or type 'exit' to go back to the main menu.");
 
-            userQuestion = userQuestion.ToLower();
+            do
+            {
 
-            if (userQuestion.Contains("hello") || userQuestion.Contains("hi"))
-            {
-                Console.WriteLine($"Hello {name} , As you know i am cyber bot. ");
-            }
-            else if (userQuestion.Contains("how are you"))
-            {
-                Console.WriteLine($"I am fine, thank you for askin, {name}");
-            }
-            else if (userQuestion.Contains("cybersecurity"))
-            {
-                Console.WriteLine("Cybersecurity is the practice of protecting systems, networks, and programs from digital attacks.");
-            }
-            else
-            {
-                Console.WriteLine($"I'm sorry {name}, I don't have an answer/response for that.");
-            }
+                Console.WriteLine("\nPlease ask your question:");
+                userQuestion = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(userQuestion))
+                {
+                    Console.WriteLine("CyberBot: I didn’t quite understand that. Could you rephrase?");
+                    continue; // skips to the next loop iteration
+                }
+
+
+                userQuestion = userQuestion.ToLower().Trim();
+
+                Console.WriteLine("You asked: " + userQuestion);
+
+                if (userQuestion == "exit")
+                {
+                    Console.WriteLine("CyberBot: Exiting Q&A mode. Goodbye for now, " + name + "!");
+                    break;
+                }
+                else if (userQuestion.Contains("hello") || userQuestion.Contains("hi"))
+                {
+                    Console.WriteLine($"CyberBot: Hello {name}, as you know I am CyberBot.");
+                }
+                else if (userQuestion.Contains("how are you"))
+                {
+                    Console.WriteLine($"CyberBot: I am fine, thank you for asking, {name}.");
+                }
+                else if (userQuestion.Contains("cybersecurity"))
+                {
+                    Console.WriteLine("CyberBot: Cybersecurity is the practice of protecting systems, networks, and programs from cyber attacks.");
+                }
+                else if (userQuestion.Contains("password"))
+                {
+                    Console.WriteLine("CyberBot: A strong password must be longer than 8 characters and include a mix of uppercase, lowercase, numbers, and symbols.");
+                }
+                else if (userQuestion.Contains("phishing"))
+                {
+                    Console.WriteLine("CyberBot: Phishing is when someone tries to trick you into giving personal info by pretending to be someone you trust.");
+                }
+                else if (userQuestion.Contains("browsing") || userQuestion.Contains("safe"))
+                {
+                    Console.WriteLine("CyberBot: To browse safely: keep your software updated, use antivirus, and don’t click on suspicious links.");
+                }
+                else
+                {
+                    Console.WriteLine($"CyberBot: I'm sorry {name}, I don't have an answer for that yet.");
+                }
+
+            } while (true);
+
+            Console.WriteLine("Returning to main menu...");
+            reponses(); // Optionally return to the main menu
+
         }
 
     }
