@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Media;
 using System.Threading.Channels;
+using System.Globalization;
 
 namespace CyberBot_ST10436124
 {
@@ -15,7 +16,8 @@ namespace CyberBot_ST10436124
 
         public void PlayGreeting()
         {
-            string fileLocation = @"C:\Users\Oarabile Marwane\OneDrive - ADvTECH Ltd\Oarabile\2025\Semester 3\PROG6221  Programming 2A\PROG6221\2025\Term 1\ST10436124_PROG6221_PART1_POE\CyberBot_ST10436124\greetings.wav";
+            // relative path to the audio file
+            string fileLocation = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "greetings.wav");
 
             if (File.Exists(fileLocation))
             {
@@ -32,11 +34,12 @@ namespace CyberBot_ST10436124
 
         }
 
+         
+
         // q2 add a method to display the logo
         public void imageDisplay()
         {
-            Console.WriteLine("\n========= CYBERSECURITY AWARENESS BOT =========\n");
-            Console.WriteLine(@"                                                 @@@@@@                                             
+            string asciiArtLogo = @"                                                 @@@@@@                                             
                                                @@@@@@@@@@@                                          
                                             @@@@@@@@@@@@@@@@                                        
                                    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                               
@@ -59,7 +62,11 @@ namespace CyberBot_ST10436124
                                        @@@@@@@@@@@@@@@@@@@@@@@@@@                                   
                                           @@@@@@@@@@@@@@@@@@@@                                      
                                              @@@@@@@@@@@@@@                                         
-                                                @@@@@@@@");
+                                                @@@@@@@@";
+
+
+            Console.WriteLine("\n ========= CYBERSECURITY AWARENESS BOT =========\n");
+            Console.WriteLine(asciiArtLogo);
         }
 
         // q3 Display a text-based welcome message with decorative boarderd 
@@ -70,17 +77,15 @@ namespace CyberBot_ST10436124
         public void GetName()
         {
             cancel = false;
-            
+
             do
             {
-                Console.Write("\nPlease enter your name: ");
+                TypingEffect("\nPlease enter your name: ");
                 name = Console.ReadLine();
 
-                if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
+                if (string.IsNullOrWhiteSpace(name))
                 {
-                    Console.Write("\nPlease enter a valid name: ");
-                    
-
+                    TypingEffect("Please enter a valid name.");
                 }
                 else
                 {
@@ -88,93 +93,74 @@ namespace CyberBot_ST10436124
                 }
 
             } while (!cancel);
-
-             
         }
 
         // this method displays a welcome message with name
         public void WelcomeMessage()
         {
-            // this method is used to get the name of the user
             GetName();
-            // Decorative border and welcome message
-            Console.WriteLine( "╔═══════════════════════════════════════════════╗");
-            Console.WriteLine($"║             WELCOME {name, -24} ║"               );
-            Console.WriteLine( "╚═══════════════════════════════════════════════╝\n");
-
-
-            Console.WriteLine($"Welcome {name} to the CyberBot, the best cybersecurity chatbot");
+            PrintDivider();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("╔═══════════════════════════════════════════════╗");
+            Console.WriteLine($"║             WELCOME {name,-25} ║");
+            Console.WriteLine("╚═══════════════════════════════════════════════╝");
+            Console.ResetColor();
+            TypingEffect($"Welcome {name} to the CyberBot, the best cybersecurity chatbot!");
         }
 
 
 
         // this methods is used to display a menu
 
-        
+
         public void StartMenu()
         {
-            // this methods is used to display a menu
+            PrintDivider();
+            PrintHeader("Main Menu");
 
-            
             Console.WriteLine("\n1. Start Chat");
             Console.WriteLine("2. Exit");
-            Console.Write("\nPlease select an option from the menu Above: ");
+            Console.Write("\nPlease select an option from the menu above: ");
             cancel = false;
 
-            // this methods is used to get user input
-
-            try
+            do
             {
+                string input = Console.ReadLine();
 
-                do
+                // Check if input is not empty and contains only digits
+                if (string.IsNullOrWhiteSpace(input))
                 {
-                    string input = Console.ReadLine();
-                    
-
-                    if (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input))
+                    TypingEffect("\nPlease enter a valid OPTION 1 or 2:");
+                }
+                else
+                {
+                    // Manually check if the input is a valid integer and within range
+                    if (input.Length == 1 && input[0] >= '1' && input[0] <= '2')
                     {
-                        Console.Write("\nPlease enter a valid OPTION 1 or 2: ");
-
-
-                    }
-                    else
-                    {
-                        int inputConvertInt = int.Parse(input);
+                        int inputConvertInt = input[0] - '0';  // Convert char to integer
 
                         if (inputConvertInt == 1)
                         {
-                            Console.WriteLine("\nStarting chat...");
+                            TypingEffect("\nStarting chat...");
                             reponses();
                             cancel = true;
                         }
                         else if (inputConvertInt == 2)
                         {
-                            Console.WriteLine("\nExiting...");
+                            TypingEffect("\nExiting...");
                             cancel = true;
                         }
-                        else
-                        {
-                            Console.Write("\nPlease enter a valid OPTION 1 or 2: ");
-
-                        }
-                        cancel = true;
                     }
+                    else
+                    {
+                        // Invalid input; prompt for retry
+                        TypingEffect("\nInvalid input. Please enter OPTION 1 or 2:");
+                    }
+                }
 
-                    
-                    
-
-                } while (!cancel);
-            }
-
-            catch (Exception)
-            {
-                Console.Write("\nI didn’t quite understand that. Could you rephrase?”  ");
-                throw;
-            }
-
-            
-            
+            } while (!cancel);
         }
+
 
         // q4 Basic Response System
 
@@ -184,19 +170,19 @@ namespace CyberBot_ST10436124
 
             do
             {
-                Console.WriteLine("Please Select a reponse from the list below: ");
-
+                PrintDivider();
+                PrintHeader("Cyber Questions");
                 Console.WriteLine("1. Hello");
                 Console.WriteLine("2. How are you?");
                 Console.WriteLine("3. What is your purpose?");
                 Console.WriteLine("4. What can I ask you about?");
                 Console.WriteLine("5. What makes a password safe?");
-                Console.WriteLine("6. What is phising?");
-                Console.WriteLine("7. How do I safeley browse the internet");
-
+                Console.WriteLine("6. What is phishing?");
+                Console.WriteLine("7. How do I safely browse the internet?");
                 Console.WriteLine("8. Can I ask my own question?");
+                Console.WriteLine("9. Cancel");
 
-                Console.WriteLine("9. Cancel?");
+                Console.Write("\nPlease select an option from the menu above: ");
 
                 int userInput = 0;
 
@@ -205,57 +191,65 @@ namespace CyberBot_ST10436124
                     userInput = int.Parse(Console.ReadLine());
                     if (userInput < 1 || userInput > 9)
                     {
-                        Console.WriteLine("Please select a valid option");
+                        TypingEffect("Please select a valid option.");
+                        continue;
                     }
-
                 }
                 catch (FormatException)
                 {
-                    Console.WriteLine("I didn’t quite understand that. Could you rephrase?");
-                    continue; // Retry the input
+                    TypingEffect("I didn’t quite understand that. Could you rephrase?");
+                    continue;
                 }
-
-
-
-
-
 
                 switch (userInput)
                 {
                     case 1:
-                        Console.WriteLine("Hello");
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        TypingEffect("CyberBot: Hello");
+                        Console.ResetColor();
                         break;
                     case 2:
-                        Console.WriteLine("I am fine, thank you for asking");
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        TypingEffect("CyberBot: I am fine, thank you for asking");
+                        Console.ResetColor();
                         break;
                     case 3:
-                        Console.WriteLine("I am here to help you with your questions");
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        TypingEffect("CyberBot: I am here to help you with your questions");
+                        Console.ResetColor();
                         break;
                     case 4:
-                        Console.WriteLine("You can ask me about anything");
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        TypingEffect("CyberBot: You can ask me about cybersecurity topics.");
+                        Console.ResetColor();
                         break;
                     case 5:
-                        Console.WriteLine("A safe password should be at least 8 characters long and should include a mix of letters, numbers, and symbols.");
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        TypingEffect("CyberBot: A safe password should be at least 8 characters long and include a mix of letters, numbers, and symbols.");
+                        Console.ResetColor();
                         break;
                     case 6:
-                        Console.WriteLine("Phishing is a type of cyber attack where an attacker tries to trick you into giving them your personal information.");
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        TypingEffect("CyberBot: Phishing is a type of cyber attack where an attacker tries to trick you into giving them your personal information.");
+                        Console.ResetColor();
                         break;
                     case 7:
-                        Console.WriteLine("To safely browse the internet, you should use a VPN, avoid clicking on suspicious links, and keep your software up to date.");
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        TypingEffect("CyberBot: To safely browse the internet, use a VPN, avoid suspicious links, and keep your software updated.");
+                        Console.ResetColor();
                         break;
                     case 8:
-                        userQuestion();
-
+                        userQuestion(); // Inside that method, you can also color the bot's responses similarly
                         break;
                     case 9:
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        TypingEffect("CyberBot: Returning to main menu...");
+                        Console.ResetColor();
                         cancel = true;
                         break;
                 }
-                while (!cancel) ;
 
             } while (!cancel);
-
-
         }
 
         //allows user to ask their own questions
@@ -267,7 +261,7 @@ namespace CyberBot_ST10436124
             do
             {
 
-                Console.WriteLine("\nPlease ask your question:");
+                Console.Writeexi("\nPlease ask your question:");
                 userQuestion = Console.ReadLine();
 
                 if (string.IsNullOrWhiteSpace(userQuestion))
@@ -320,6 +314,35 @@ namespace CyberBot_ST10436124
             Console.WriteLine("Returning to main menu...");
             reponses(); // Optionally return to the main menu
 
+        }
+
+        // q6 add visual elements to the chatbot
+
+        // this method is used to format colour and and divider
+
+        public void PrintDivider()
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("\n════════════════════════════════════════════════════════════");
+            Console.ResetColor();
+        }
+
+        // this method is used to add typing effect to the text
+        public void TypingEffect(string message, int delay = 15)
+        {
+            foreach (char c in message)
+            {
+                Console.Write(c);
+                Thread.Sleep(delay);
+            }
+            Console.WriteLine(); // Move to next line after message
+        }
+
+        public void PrintHeader(string header)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("\n===== " + header.ToUpper() + " =====");
+            Console.ResetColor();
         }
 
     }
