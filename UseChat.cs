@@ -1,4 +1,5 @@
-﻿namespace CyberBot_ST10436124
+﻿//st10436124 POE Part 1
+namespace CyberBot_ST10436124
 {
     internal class UseChat
     {
