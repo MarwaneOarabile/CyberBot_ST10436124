@@ -82,7 +82,7 @@ namespace CyberBot_ST10436124
 
             do
             {
-                TypingEffect("\nPlease enter your name: ");
+                TypingEffect("Please enter your name: ");
                 name = Console.ReadLine();
 
                 if (string.IsNullOrWhiteSpace(name))
@@ -101,10 +101,11 @@ namespace CyberBot_ST10436124
         public void WelcomeMessage()
         {
             GetName();
+            
             PrintDivider();
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("╔═══════════════════════════════════════════════╗");
-            Console.WriteLine($"║             WELCOME {name,-25} ║");
+            Console.WriteLine($"║             WELCOME {name.ToUpper(),-25} ║");
             Console.WriteLine("╚═══════════════════════════════════════════════╝");
             Console.ResetColor();
             TypingEffect($"Welcome {name} to the CyberBot, the best cybersecurity chatbot!");
@@ -193,13 +194,17 @@ namespace CyberBot_ST10436124
                     userInput = int.Parse(Console.ReadLine());
                     if (userInput < 1 || userInput > 9)
                     {
-                        TypingEffect("Please select a valid option.");
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        TypingEffect("CyberBot: Please select a valid option.");
+                        Console.ResetColor();
                         continue;
                     }
                 }
                 catch (FormatException)
                 {
-                    TypingEffect("I didn’t quite understand that. Could you rephrase?");
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    TypingEffect("CyberBot: I didn’t quite understand that. Could you rephrase?");
+                    Console.ResetColor();
                     continue;
                 }
 
@@ -277,7 +282,7 @@ namespace CyberBot_ST10436124
 
                 Console.WriteLine("You asked: " + userQuestion);
 
-                if (userQuestion == "exit")
+                if (userQuestion.Contains("exit")) 
                 {
                     Console.WriteLine("CyberBot: Exiting Q&A mode. Goodbye for now, " + name + "!");
                     break;
