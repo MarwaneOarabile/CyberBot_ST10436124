@@ -261,7 +261,7 @@ namespace CyberBot_ST10436124
             do
             {
 
-                Console.Writeexi("\nPlease ask your question:");
+                Console.Write("\nPlease ask your question:");
                 userQuestion = Console.ReadLine();
 
                 if (string.IsNullOrWhiteSpace(userQuestion))
