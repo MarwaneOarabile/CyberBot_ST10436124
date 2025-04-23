@@ -1,8 +1,10 @@
 ﻿//st10436124 POE Part 1
+
 namespace CyberBot_ST10436124
 {
     internal class UseChat
     {
+        // runs the code
         static void Main(string[] args)
         {
             // plays the audio file when the application starts
